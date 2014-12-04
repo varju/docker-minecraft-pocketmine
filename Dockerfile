@@ -1,19 +1,23 @@
-FROM ubuntu
+FROM debian:jessie
 MAINTAINER Zach Latta <zach@zachlatta.com>
 
-RUN apt-get update
-RUN apt-get install -y make autoconf automake libtool m4 wget
+RUN apt-get update \
+  && apt-get install -y perl gcc g++ make automake libtool autoconf m4 gcc-multilib wget \
+  && apt-get clean
 
-
-RUN useradd -s /bin/bash -d /minecraft -m minecraft
-
-ADD https://github.com/PocketMine/PocketMine-MP/releases/download/Alpha_1.3.9/PocketMine-MP_Installer_Alpha_1.3.9.sh /minecraft/install.sh
-RUN cd /minecraft && sh install.sh
-RUN chown -R minecraft:minecraft /minecraft
+RUN useradd -s /bin/bash -d /minecraft -m minecraft -u 1000 \
+  && mkdir /minecraft-installer \
+  && chown minecraft:minecraft /minecraft-installer
 
 USER minecraft
 WORKDIR /minecraft
 VOLUME /minecraft
 EXPOSE 19132
 
-ENTRYPOINT ./start.sh
+ENV VERSION Alpha_1.4dev-855
+
+RUN cd /minecraft-installer \
+  && wget -q -O - http://get.pocketmine.net/ | bash -s - -v beta
+
+COPY start-minecraft.sh /
+CMD /start-minecraft.sh
