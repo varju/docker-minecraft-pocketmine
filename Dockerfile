@@ -12,7 +12,7 @@ RUN useradd -s /bin/bash -d /minecraft -m minecraft -u 1000 \
 USER minecraft
 WORKDIR /minecraft
 VOLUME /minecraft
-EXPOSE 19132
+EXPOSE 19132/udp
 
 ENV VERSION Alpha_1.4dev-855
 
