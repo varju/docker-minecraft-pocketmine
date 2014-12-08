@@ -14,10 +14,10 @@ WORKDIR /minecraft
 VOLUME /minecraft
 EXPOSE 19132/udp
 
-ENV VERSION Alpha_1.4dev-855
+ENV VERSION Alpha_1.4dev-869
 
 RUN cd /minecraft-installer \
-  && wget -q -O - http://get.pocketmine.net/ | bash -s - -v beta
+  && wget -q -O - http://get.pocketmine.net/ | bash -s - -v development
 
 COPY start-minecraft.sh /
 CMD /start-minecraft.sh
